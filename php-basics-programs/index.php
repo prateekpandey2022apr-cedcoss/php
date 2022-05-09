@@ -1,23 +1,32 @@
 <?php
 
-function find_grade($marks){
-    if($marks >= 60){
-        return "First Division";
+function weekday($num){
+
+    switch ($num) {
+        case 1:            
+            return "Monday";
+        case 2:            
+            return "Tuesday";
+        case 3:            
+            return "Wednesday";
+        case 4:            
+            return "Thursday";
+        case 5:            
+            return "Friday";
+        case 6:            
+            return "Saturday";
+        case 7:            
+            return "Sunday";        
+        default:
+            return "Invalid Number";
     }
-    elseif( $marks >= 45 && $marks <= 59 ){
-        return "Second Division";
-    }
-    elseif( $marks >= 33 && $marks <= 44 ){
-        return "Third Division";
-    }
-    else{
-        return "Fail";
-    }
+    
 }
 
 
-echo find_grade(95) . "<br>";
-echo find_grade(40) . "<br>";
+echo weekday(1) . "<br>";
+echo weekday(6) . "<br>";
+echo weekday(8). "<br>";
 
 
 ?>
