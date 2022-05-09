@@ -1,10 +1,9 @@
 <?php
 
-$i = 5;
-
-while($i < 16){
-    echo $i . "<br>";
-    $i++;
+function add($a, $b){
+    return $a + $b;
 }
+
+echo add(1, 10);
 
 ?>
