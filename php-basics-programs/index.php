@@ -1,9 +1,7 @@
 <?php
 
-function add($a, $b){
-    return $a + $b;
-}
+$msg = "php World";
 
-echo add(1, 10);
+echo "Welcome to $msg";
 
 ?>
