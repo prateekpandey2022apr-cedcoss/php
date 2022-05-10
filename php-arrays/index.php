@@ -1,21 +1,32 @@
 <?php
 
     $first_arr = array(
-        'c1' => 'Red', 
-        'c2' => 'Green', 
-        'c3' => 'White', 
-        'c4' => 'Black',
+        "one",
+        "two",
+        "three",
+        "four",
     );
+    
+    $to_delete = "two";
 
-    $filter_by = array("c2", "c4");
+    echo "Original Array: ";
 
-    $new_array = array_filter($first_arr, function($key) use($filter_by){
-        // return $key !== "c2" && $key !== "c4";
-        return !in_array($key, $filter_by);
-    }, ARRAY_FILTER_USE_KEY);
+    echo "<pre>";
+    var_dump($first_arr);
+    echo "</pre>";
 
+    $new_array = array_filter($first_arr, function($val) use($to_delete){
+        return $val != $to_delete;
+    });
+
+    echo "After deletion of: {$to_delete}";
+    
     echo "<pre>";
     var_dump($new_array);
     echo "</pre>";
+
+    // echo "<pre>";
+    // var_dump($first_arr);
+    // echo "</pre>";
 
 ?>
