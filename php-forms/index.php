@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,11 +8,9 @@
     <title>Document</title>
 
     <style>
-
-    .error{
-        background-color: red;
-    }
-
+        .error {
+            background-color: red;
+        }
     </style>
 
 </head>
@@ -19,23 +18,20 @@
 <body>
 
 
-<?php 
-    
+    <?php
+
     // echo "<pre>";
     // var_dump($_POST);    
     // echo "</pre>";    
 
     // $validation_errors = array();
 
-    if( isset($_POST["submit"]) )
-    {        
+    if (isset($_POST["submit"])) {
         process_form();
-    }    
-    else
-    {        
+    } else {
         display_form(array());
     }
-    
+
     function validate_field($field, $missing_fields)
     {
         global $validation_errors;
@@ -43,24 +39,14 @@
         if(in_array($field, $missing_fields))
         {
             echo ' class="error"';
-        }
-
-        else
-        {
-            if ( !is_numeric($_POST[$field]) && !empty($_POST[$field]) )
-            {
-                $validation_errors[$field] = "$field must be numeric";
-                echo ' class="error"';
-                // var_dump($validation_errors);
-            }
-        }
+        }        
     }
 
     function process_form()
-    {
-
-        $required_fields = array( "length", "width");
+    {   
+        $required_fields = array( "input", "conversion");
         $missing_fields = array();
+
 
         foreach ($required_fields as $field) {
             if( !isset($_POST[$field]) or empty($_POST[$field]) )
@@ -75,88 +61,79 @@
         }
         else
         {
+
+            // echo "<pre>";
+            // var_dump($_POST);
+            // echo "</pre>";
+        
             // echo "called";
             // $num1_err = $num2_err = "";
 
-            $length = $_POST['length'];
-            $width = $_POST['width'];            
+            $hrs = $_POST['input'];            
+            $conversion = $_POST['conversion'];
 
-            $_POST['area'] = $length * $width;
-            $_POST['peri'] = 2 * ($length + $width);
-            $_POST['result'] = true;
-            
-            // if(!is_numeric($num1))
-            // {
-            //     $num1_err = "Field must be numeric";
-            // }
-    
-            // if(!is_numeric($num1))
-            // {
-            //     $num1_err = "Field must be numeric";
-            // }          
-
-            // var_dump($_POST);
-
+            if($conversion == "min")
+            {
+                $_POST['result'] = $hrs * 60;
+            }
+            else
+            {
+                $_POST['result'] = $hrs * 60 * 60;
+            }
+        
             display_form(array());
-
-    
+            // echo "form submitted";
         }
-
-        // echo "form submitted";
     }
 
     function display_form($missing_fields)
-    { 
+    {
         // global $validation_errors;
-?>
-    <?php if ($missing_fields) { ?>
-        <p>There were some errors while trying to fill the form</p>
-    <?php } ?>
-
-
-    <?php //var_dump($validation_errors); ?>
-
-<form action="" method="post">
-
-    <table>
-        <tr>
-            <td <?php validate_field("length", $missing_fields); ?>
-            >Length of Rectangle</td>
-            <td><input type="text" name="length" id="length"                
-               value="<?php echo $_POST['length']; ?>">
-            </td>            
-        </tr>
-        <tr>
-            <td <?php validate_field("width", $missing_fields); ?> 
-             >Width of rectangle</td>
-            <td><input type="text" name="width" id="width" 
-                value="<?php echo $_POST['width']; ?>" ></td>        
-        </tr>        
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" name="submit" id="submit" 
-                value="Calculate Area and Perimeter">                
-            </td>
-        </tr>
-    </table>
-
-    <?php    
-
     ?>
+        <?php if ($missing_fields) { ?>
+            <p>There were some errors while trying to fill the form</p>
+        <?php } ?>
 
-    <?php if(isset($_POST['result'])) { ?>
 
-    <div class="">
-        <div>Area is <?php echo $_POST['area'] . " sq. mtr." ?></div>
-        <div>Perimeter is <?php echo $_POST['peri'] . " mtr" ?></div>
-    </div>
+        <?php //var_dump($validation_errors); 
+        ?>
+
+        <form action="" method="post">
+
+            <p>
+                <input type="text" name="input" id="input"
+                 value="<?php echo $_POST['input'] ?>"
+                 <?php echo validate_field("input", $missing_fields); ?>   >
+            </p>            
+
+            <p <?php echo validate_field("conversion", $missing_fields); ?> >
+                <label for="min">
+                    <input type="radio" name="conversion" value="min" id="min" 
+                    
+                    <?php if(isset($_POST['conversion']) && 
+                    $_POST['conversion'] == "min" ) echo "checked" ?>  >Hours to mins
+                </label>
+                <br>
+                <label for="sec">
+                    <input type="radio" name="conversion" value="sec" id="sec"
+                    <?php if(isset($_POST['conversion']) && 
+                    $_POST['conversion'] == "sec" ) echo "checked" ?>
+                    >Hours to secs
+                </label>                
+            </p>
+
+            <?php if(isset($_POST['result'])) { ?>
+                <p><?php echo $_POST['result'] ?></p>
+            <?php } ?>            
+
+            <p>
+                <input type="submit" name="submit" value="Convert" id="submit">
+            </p>       
+
+        </form>
 
     <?php } ?>
-
-</form>
-
-<?php } ?>
 
 </body>
+
 </html>
