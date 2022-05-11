@@ -27,12 +27,12 @@
 
     // $validation_errors = array();
 
-    if( isset($_POST["btn"]) )
-    {
+    if( isset($_POST["submit"]) )
+    {        
         process_form();
     }    
     else
-    {
+    {        
         display_form(array());
     }
     
@@ -59,7 +59,7 @@
     function process_form()
     {
 
-        $required_fields = array( "num1", "num2");
+        $required_fields = array( "length", "width");
         $missing_fields = array();
 
         foreach ($required_fields as $field) {
@@ -75,11 +75,15 @@
         }
         else
         {
+            // echo "called";
             // $num1_err = $num2_err = "";
 
-            $num1 = $_POST['num1'];
-            $num2 = $_POST['num2'];
-            $operation = $_POST['btn'];
+            $length = $_POST['length'];
+            $width = $_POST['width'];            
+
+            $_POST['area'] = $length * $width;
+            $_POST['peri'] = 2 * ($length + $width);
+            $_POST['result'] = true;
             
             // if(!is_numeric($num1))
             // {
@@ -89,29 +93,12 @@
             // if(!is_numeric($num1))
             // {
             //     $num1_err = "Field must be numeric";
-            // }
-    
-            switch ($operation) 
-            {
-                case '+':
-                    $result = $num1 + $num2;
-                    break;
-                case '-':
-                    $result = $num1 - $num2;
-                    break;            
-                case 'x':                
-                    $result = $num1 * $num2;
-                    break;                
-                case '/':                
-                    $result = $num1 / $num2;                
-                    break;                
-                default:
-                    $result = "Invalid Operation";                
-            }      
-            
-            $_POST['result'] = $result;
+            // }          
+
+            // var_dump($_POST);
 
             display_form(array());
+
     
         }
 
@@ -133,33 +120,39 @@
 
     <table>
         <tr>
-            <td <?php validate_field("num1", $missing_fields); ?>
-            >Number 1</td>
-            <td><input type="text" name="num1" id="num1"                
-               value="<?php echo $_POST['num1']; ?>">
+            <td <?php validate_field("length", $missing_fields); ?>
+            >Length of Rectangle</td>
+            <td><input type="text" name="length" id="length"                
+               value="<?php echo $_POST['length']; ?>">
             </td>            
         </tr>
         <tr>
-            <td <?php validate_field("num2", $missing_fields); ?> 
-             >Number 2</td>
-            <td><input type="text" name="num2" id="num2" 
-                value="<?php echo $_POST['num2']; ?>" ></td>        
-        </tr>
-        <tr>
-            <td>Result</td>
-            <td><input type="text" name="result" id="result"
-             value="<?php echo $_POST['result']; ?>" ></td>
-        </tr>
+            <td <?php validate_field("width", $missing_fields); ?> 
+             >Width of rectangle</td>
+            <td><input type="text" name="width" id="width" 
+                value="<?php echo $_POST['width']; ?>" ></td>        
+        </tr>        
         <tr>
             <td></td>
             <td>
-                <input type="submit" name="btn" id="add" value="+">
-                <input type="submit" name="btn" id="sub" value="-">
-                <input type="submit" name="btn" id="mul" value="x">
-                <input type="submit" name="btn" id="div" value="/">
+                <input type="submit" name="submit" id="submit" 
+                value="Calculate Area and Perimeter">                
             </td>
         </tr>
     </table>
+
+    <?php    
+
+    ?>
+
+    <?php if(isset($_POST['result'])) { ?>
+
+    <div class="">
+        <div>Area is <?php echo $_POST['area'] . " sq. mtr." ?></div>
+        <div>Perimeter is <?php echo $_POST['peri'] . " mtr" ?></div>
+    </div>
+
+    <?php } ?>
 
 </form>
 
